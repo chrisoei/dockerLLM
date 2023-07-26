@@ -1,7 +1,7 @@
 ARG CUDA_VERSION="11.8.0"
 ARG CUDNN_VERSION="8"
 ARG UBUNTU_VERSION="22.04"
-ARG DOCKER_FROM=thebloke/cuda$CUDA_VERSION-ubuntu$UBUNTU_VERSION-textgen:latest 
+ARG DOCKER_FROM=chrisoei/cuda$CUDA_VERSION-ubuntu$UBUNTU_VERSION-textgen:latest 
 
 # Base image
 FROM $DOCKER_FROM as base
@@ -9,10 +9,15 @@ FROM $DOCKER_FROM as base
 ARG APTPKGS="zsh wget tmux tldr nvtop vim neovim curl rsync net-tools less iputils-ping 7zip zip unzip"
 
 # Install useful command line utility software
-RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends $APTPKGS && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN \
+    --mount=type=cache,target=/root/.cache,sharing=locked \
+    --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/cache/mirror,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    <<EOF
+apt-get update -y && \
+    apt-get install -y --no-install-recommends $APTPKGS
+EOF
 
 # Set up git to support LFS, and to store credentials; useful for Huggingface Hub
 RUN git config --global credential.helper store && \
