@@ -17,14 +17,6 @@ push.log: build.log
 
 push: push.log
 
-shell:
-	docker run \
-		-v $(HOME)/Dropbox:/home/c/Dropbox \
-		-v /mnt:/mnt \
-		-it \
-		$(TAG1):`cat timestamp.txt` \
-		/bin/bash
-
 clean:
 	rm -f build.log push.log timestamp.txt
 
