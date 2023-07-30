@@ -39,6 +39,7 @@ COPY conf-files/passwd /etc/passwd
 COPY scripts /root/scripts
 
 COPY --chmod=755 start-with-ui.sh /start.sh
+COPY conf-files/stringstack.sh /etc/stringstack.sh
 
 WORKDIR /workspace
 
