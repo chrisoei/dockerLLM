@@ -21,6 +21,6 @@ clean:
 	rm -f build.log push.log timestamp.txt
 
 timestamp.txt: Dockerfile
-	date -u +'%Y-%m-%d_%H%M%Sz' > timestamp.txt
+	./stardate.pl --underscore > timestamp.txt
 
 # vim: set noet ff=unix ft=make nocp sts=2 sw=2 ts=2:
